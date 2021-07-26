@@ -28,7 +28,6 @@ export class CreateStudentComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       age: ['', Validators.required],
-      biography: [''],
     });
     this.id = this.aRoute.snapshot.paramMap.get('id');
     console.log(this.id);
@@ -59,7 +58,7 @@ export class CreateStudentComponent implements OnInit {
 
   createStudent(data: any) {
     this.loading = true;
-    this.studentService.preAddAndUpdateStudent(data, this.file);
+    this.studentService.createStudent(data);
 
     this.toastr.success('The student was registered with success!');
     this.loading = false;
@@ -72,7 +71,6 @@ export class CreateStudentComponent implements OnInit {
       firstName: this.createStudentFormGroup.value.firstName,
       lastName: this.createStudentFormGroup.value.lastName,
       age: this.createStudentFormGroup.value.age,
-      biography: this.createStudentFormGroup.value.biography,
     };
 
     this.loading = true;
@@ -93,7 +91,6 @@ export class CreateStudentComponent implements OnInit {
           firstName: data.payload.data()['firstName'],
           lastName: data.payload.data()['lastName'],
           age: data.payload.data()['age'],
-          biography: data.payload.data()['biography'],
         });
       });
     }
