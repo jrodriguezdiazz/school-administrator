@@ -129,7 +129,14 @@
     <div class="row">
       <div class="card">
         <div class="card-body">
-          <h3 class="mb-5">By XML file</h3>
+          <h3 class="mb-5">
+            By XML file <br />
+            <span class="h6"
+              >Note: If you upload an XML file, students' data will be saved
+              automatically
+            </span>
+          </h3>
+
           <form>
             <div class="form-group mb-3">
               <div class="input-group">
@@ -145,13 +152,9 @@
                   class="form-control"
                   id="xml"
                   accept=".xml"
+                  (change)="readFile($event)"
                 />
               </div>
-            </div>
-            <div class="mt-3">
-              <button type="submit" class="btn btn-primary btn-lg right">
-                Create
-              </button>
             </div>
           </form>
         </div>

@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { StudentService } from 'src/app/services/student.service';
+import { xml2json } from 'xml-js';
 
 @Component({
   selector: 'app-create-student',
@@ -104,5 +105,53 @@ export class CreateStudentComponent implements OnInit {
         });
       });
     }
+  }
+
+  convertXMLToJSON(event: any) {
+    const xmlData: string = (event as any).target.result;
+    return JSON.parse(xml2json(xmlData, { compact: true, spaces: 4 }));
+  }
+
+  createStudentByXML(students: any) {
+    students.map((student: any) => {
+      const { name, lastname, age } = student;
+      const data = {
+        creationDateNew: Date(),
+        dateUpdate: new Date(),
+        firstName: name._text,
+        lastName: lastname._text,
+        age: age._text,
+        biography: '',
+      };
+
+      this.studentService
+        .createStudent(data)
+        .then(() => {
+          this.loading = false;
+          this.router.navigate(['/list-students']);
+        })
+        .catch((error) => {
+          console.log(error);
+          this.loading = false;
+        });
+    });
+    this.toastr.success(`${students.length} students have been registered!`);
+  }
+
+  readFile(event: any) {
+    const file = event.target.files[0];
+    if (!file) {
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const {
+        students: { student },
+      } = this.convertXMLToJSON(event);
+      console.log(student);
+
+      this.createStudentByXML(student);
+    };
+    reader.readAsText(file);
   }
 }
