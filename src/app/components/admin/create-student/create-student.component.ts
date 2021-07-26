@@ -154,4 +154,8 @@ export class CreateStudentComponent implements OnInit {
     };
     reader.readAsText(file);
   }
+
+  get formControls() {
+    return this.createStudentFormGroup['controls'];
+  }
 }
