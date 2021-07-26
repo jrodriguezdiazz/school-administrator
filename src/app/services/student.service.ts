@@ -8,13 +8,13 @@ import { AngularFirestore } from '@angular/fire/firestore';
 export class StudentService {
   constructor(private firestore: AngularFirestore) {}
 
-  addStudent(student: any): Promise<any> {
+  createStudent(student: any): Promise<any> {
     return this.firestore.collection('students').add(student);
   }
 
   getStudents(): Observable<any> {
     return this.firestore
-      .collection('students', (ref) => ref.orderBy('creationDate', 'asc'))
+      .collection('students', (ref) => ref.orderBy('creationDateNew', 'asc'))
       .snapshotChanges();
   }
 
