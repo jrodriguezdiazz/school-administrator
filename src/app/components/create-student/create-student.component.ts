@@ -82,14 +82,35 @@ export class CreateStudentComponent implements OnInit {
     if (this.id !== null) {
       this.loading = true;
       this.studentService.getStudent(this.id).subscribe((data) => {
-        this.loading = false;
-        this.createStudentFormGroup.setValue({
-          firstName: data.payload.data()['firstName'],
-          lastName: data.payload.data()['lastName'],
-          age: data.payload.data()['age'],
-        });
+        try {
+          this.fillFields(data);
+        } catch (error) {
+          this.redirect();
+        }
       });
     }
+  }
+
+  fillFields(data: any) {
+    this.loading = false;
+    this.createStudentFormGroup.setValue({
+      firstName: data.payload.data()['firstName'],
+      lastName: data.payload.data()['lastName'],
+      age: data.payload.data()['age'],
+    });
+  }
+
+  redirect() {
+    this.toastrService.error(
+      `Apparently there is no student with the ID: ${this.id} \n You will be redirected to the home page soon ...`,
+      'An error has occurred...'
+    );
+    this.toastrService.error(
+      `You will be redirected to the home page soon ...`
+    );
+    setTimeout(() => {
+      this.router.navigate(['list-student']);
+    }, 6000);
   }
 
   convertXMLToJSON(event: any) {
