@@ -17,6 +17,7 @@ export class CreateStudentComponent implements OnInit {
   loading = false;
   id: string | null;
   title: string = 'Create a new student';
+  buttonText: string = 'Create a new student';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -32,6 +33,7 @@ export class CreateStudentComponent implements OnInit {
     });
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
     this.title = this.id ? 'Edit a student' : this.title;
+    this.buttonText = this.id ? 'Update student data' : this.title;
   }
 
   ngOnInit(): void {
