@@ -9,8 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CreateStudentComponent } from './components/admin/create-student/create-student.component';
-import { ListStudentsComponent } from './components/admin/list-students/list-students.component';
+import { CreateStudentComponent } from './components/create-student/create-student.component';
+import { ListStudentsComponent } from './components/list-students/list-students.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { StudentService } from './services/student.service';
 
