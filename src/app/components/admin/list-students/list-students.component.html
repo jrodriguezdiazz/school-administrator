@@ -1,1 +1,45 @@
-<p>list-students works!</p>
+<div class="mt-4">
+  <div class="card">
+    <div class="card-body">
+      <span class="h3">List of Students</span>
+      <button
+        class="btn btn-dark btn-lg float-right"
+        routerLink="/create-student"
+      >
+        Create New Student
+      </button>
+      <h5 style="margin-top: 30px" *ngIf="students.length == 0">
+        No student registered
+      </h5>
+      <table *ngIf="students.length > 0" class="table table-striped mt-5">
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last name</th>
+            <th>Age</th>
+            <th>Biography</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let student of students">
+            <td>{{ student.firstName }}</td>
+            <td>{{ student.lastName }}</td>
+            <td>{{ student.age }}</td>
+            <td>{{ student.biography }}</td>
+            <td>
+              <i
+                class="fas fa-edit fa-lg text-info mr-2"
+                [routerLink]="['/edit-student/', student.id]"
+              ></i>
+              <i
+                (click)="deleteStudent(student.id)"
+                class="fas fa-trash-alt fa-lg text-danger"
+              ></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
