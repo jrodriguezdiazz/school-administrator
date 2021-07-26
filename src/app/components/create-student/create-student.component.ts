@@ -87,7 +87,9 @@ export class CreateStudentComponent implements OnInit {
         try {
           this.fillFields(data);
         } catch (error) {
-          this.redirect();
+          this.redirect(
+            `Apparently there is no student with the ID: ${this.id} \n You will be redirected to the home page soon ...`
+          );
         }
       });
     }
@@ -102,11 +104,8 @@ export class CreateStudentComponent implements OnInit {
     });
   }
 
-  redirect() {
-    this.toastrService.error(
-      `Apparently there is no student with the ID: ${this.id} \n You will be redirected to the home page soon ...`,
-      'An error has occurred...'
-    );
+  redirect(customMessage: string) {
+    this.toastrService.error(customMessage, 'An error has occurred...');
     this.toastrService.error(
       `You will be redirected to the home page soon ...`
     );
@@ -138,9 +137,11 @@ export class CreateStudentComponent implements OnInit {
           this.loading = false;
           this.router.navigate(['/list-students']);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((error: Error) => {
           this.loading = false;
+          this.redirect(
+            `An unexpected error has occurred when creating the students\n${error.name}\n${error.message}`
+          );
         });
     });
     this.toastrService.success(
@@ -164,9 +165,8 @@ export class CreateStudentComponent implements OnInit {
 
         this.createStudentByXML(student);
       } catch (error) {
-        this.toastrService.error(
-          'Something has missed implementing the XML file',
-          'Check the XML file please'
+        this.redirect(
+          'Check the XML file please\nSomething has missed implementing the XML file'
         );
       }
     };
