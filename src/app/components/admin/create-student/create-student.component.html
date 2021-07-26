@@ -1,23 +1,15 @@
 <div class="container pt-4">
+  <h1 class="mb-5">
+    Create (or edit) a student
+    <div *ngIf="loading" class="spinner-border float-right" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </h1>
   <div class="row">
-    <div class="col-lg-6 offset-lg-3">
-      <div class="card text-center">
+    <div class="col-md-6">
+      <div class="card">
         <div class="card-body">
-          <h3>
-            {{ title }}
-            <div
-              *ngIf="loading"
-              class="spinner-border float-right"
-              role="status"
-            >
-              <span class="sr-only">Loading...</span>
-            </div>
-          </h3>
-          <span
-            *ngIf="submitted && createStudentFormGroup.invalid"
-            class="badge badge-danger"
-            >ALL FIELDS ARE REQUIRED</span
-          >
+          <h3>By Form</h3>
           <form
             class="mt-4"
             [formGroup]="createStudentFormGroup"
@@ -94,6 +86,68 @@
               </div>
             </div>
 
+            <div class="mt-3">
+              <button type="submit" class="btn btn-primary btn-lg right">
+                Create
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <img
+          width="20%"
+          class="rounded mx-auto d-block mt-3"
+          src="https://image.flaticon.com/icons/png/512/3011/3011270.png"
+          alt="Card image cap"
+        />
+        <div class="card-body">
+          <h5
+            class="card-title"
+            *ngIf="createStudentFormGroup.value.firstName != ''"
+          >
+            My name is:
+            {{
+              createStudentFormGroup.value.firstName +
+                " " +
+                createStudentFormGroup.value.lastName
+            }}
+          </h5>
+          <h6 *ngIf="createStudentFormGroup.value.age > 3" class="card-text">
+            I am {{ createStudentFormGroup.value.age }} years old
+          </h6>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <hr class="mt-5 mb-5" />
+
+    <div class="row">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="mb-5">By XML file</h3>
+          <form>
+            <div class="form-group mb-3">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="xml"
+                    >Select a valid XML file</span
+                  >
+                </div>
+                <input
+                  required
+                  name="xml"
+                  type="file"
+                  class="form-control"
+                  id="xml"
+                  accept=".xml"
+                />
+              </div>
+            </div>
             <div class="mt-3">
               <button type="submit" class="btn btn-primary btn-lg right">
                 Create

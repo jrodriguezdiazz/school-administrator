@@ -14,7 +14,6 @@ export class CreateStudentComponent implements OnInit {
   submitted = false;
   loading = false;
   id: string | null;
-  title = 'Add Student';
 
   constructor(
     private fb: FormBuilder,
@@ -93,7 +92,6 @@ export class CreateStudentComponent implements OnInit {
   }
 
   isEdit() {
-    this.title = 'Edit Student Data';
     if (this.id !== null) {
       this.loading = true;
       this.studentService.getStudent(this.id).subscribe((data) => {
