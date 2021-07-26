@@ -16,30 +16,26 @@ export class CreateStudentComponent implements OnInit {
   submitted = false;
   loading = false;
   id: string | null;
+  title: string = 'Create a new student';
 
   constructor(
-    private fb: FormBuilder,
+    private formBuilder: FormBuilder,
     private studentService: StudentService,
     private router: Router,
-    private toastr: ToastrService,
-    private aRoute: ActivatedRoute
+    private toastrService: ToastrService,
+    private activatedRoute: ActivatedRoute
   ) {
-    this.createStudentFormGroup = this.fb.group({
+    this.createStudentFormGroup = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       age: ['', Validators.required],
     });
-    this.id = this.aRoute.snapshot.paramMap.get('id');
-    console.log(this.id);
+    this.id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.title = this.id ? 'Edit a student' : this.title;
   }
 
   ngOnInit(): void {
     this.isEdit();
-  }
-
-  handleImage($event: any) {
-    this.file = $event.target.files[0];
-    console.log(this.file);
   }
 
   addEditStudent(data: any) {
@@ -60,7 +56,7 @@ export class CreateStudentComponent implements OnInit {
     this.loading = true;
     this.studentService.createStudent(data);
 
-    this.toastr.success('The student was registered with success!');
+    this.toastrService.success('The student was registered with success!');
     this.loading = false;
     this.router.navigate(['/list-students']);
   }
@@ -77,7 +73,7 @@ export class CreateStudentComponent implements OnInit {
 
     this.studentService.updateStudent(id, student).then(() => {
       this.loading = false;
-      this.toastr.info('Student data have been modified with success');
+      this.toastrService.info('Student data have been modified with success');
       this.router.navigate(['/list-students']);
     });
   }
@@ -124,7 +120,9 @@ export class CreateStudentComponent implements OnInit {
           this.loading = false;
         });
     });
-    this.toastr.success(`${students.length} students have been registered!`);
+    this.toastrService.success(
+      `${students.length} students have been registered!`
+    );
   }
 
   readFile(event: any) {
@@ -143,7 +141,7 @@ export class CreateStudentComponent implements OnInit {
 
         this.createStudentByXML(student);
       } catch (error) {
-        this.toastr.error(
+        this.toastrService.error(
           'Something has missed implementing the XML file',
           'Check the XML file please'
         );
