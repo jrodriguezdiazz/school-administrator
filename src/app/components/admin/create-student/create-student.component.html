@@ -13,7 +13,7 @@
           <form
             class="mt-4"
             [formGroup]="createStudentFormGroup"
-            (ngSubmit)="addEditStudent()"
+            (ngSubmit)="addEditStudent(createStudentFormGroup.value)"
           >
             <div class="form-group mb-3">
               <div class="input-group">
@@ -94,6 +94,7 @@
                   >
                 </div>
                 <input
+                  (change)="handleImage($event)"
                   formControlName="biography"
                   name="biography"
                   type="file"

@@ -11,6 +11,7 @@ import { xml2json } from 'xml-js';
   styleUrls: ['./create-student.component.css'],
 })
 export class CreateStudentComponent implements OnInit {
+  private file: any;
   createStudentFormGroup: FormGroup;
   submitted = false;
   loading = false;
@@ -37,7 +38,12 @@ export class CreateStudentComponent implements OnInit {
     this.isEdit();
   }
 
-  addEditStudent() {
+  handleImage($event: any) {
+    this.file = $event.target.files[0];
+    console.log(this.file);
+  }
+
+  addEditStudent(data: any) {
     this.submitted = true;
 
     if (this.createStudentFormGroup.invalid) {
@@ -45,33 +51,19 @@ export class CreateStudentComponent implements OnInit {
     }
 
     if (this.id === null) {
-      this.createStudent();
+      this.createStudent(data);
     } else {
       this.editStudent(this.id);
     }
   }
 
-  createStudent() {
-    const student: any = {
-      creationDateNew: Date(),
-      dateUpdate: new Date(),
-      firstName: this.createStudentFormGroup.value.firstName,
-      lastName: this.createStudentFormGroup.value.lastName,
-      age: this.createStudentFormGroup.value.age,
-      biography: this.createStudentFormGroup.value.biography,
-    };
+  createStudent(data: any) {
     this.loading = true;
-    this.studentService
-      .createStudent(student)
-      .then(() => {
-        this.toastr.success('The student was registered with success!');
-        this.loading = false;
-        this.router.navigate(['/list-students']);
-      })
-      .catch((error) => {
-        console.log(error);
-        this.loading = false;
-      });
+    this.studentService.preAddAndUpdateStudent(data, this.file);
+
+    this.toastr.success('The student was registered with success!');
+    this.loading = false;
+    this.router.navigate(['/list-students']);
   }
 
   editStudent(id: string) {
