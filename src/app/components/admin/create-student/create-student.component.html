@@ -29,6 +29,7 @@
                   type="text"
                   class="form-control"
                   placeholder="Enter the or student's names"
+                  minlength="3"
                 />
               </div>
               <div
@@ -36,6 +37,12 @@
                 *ngIf="submitted && formControls.firstName.errors?.required"
               >
                 The student's name is a required field
+              </div>
+              <div
+                class="text-danger"
+                *ngIf="formControls.firstName.errors?.minlength"
+              >
+                The student's name must be at least 3 characters long.
               </div>
             </div>
 
@@ -53,6 +60,7 @@
                   type="text"
                   class="form-control"
                   placeholder="Enter the student's last name"
+                  minlength="3"
                 />
               </div>
               <div
@@ -60,6 +68,12 @@
                 *ngIf="submitted && formControls.lastName.errors?.required"
               >
                 The student's last name is a required field
+              </div>
+              <div
+                class="text-danger"
+                *ngIf="formControls.lastName.errors?.minlength"
+              >
+                The student's last name must be at least 3 characters long.
               </div>
             </div>
 
@@ -76,6 +90,8 @@
                   type="number"
                   class="form-control"
                   placeholder="Enter the student's age"
+                  [min]="3"
+                  [max]="18"
                 />
               </div>
               <div
@@ -83,6 +99,18 @@
                 *ngIf="submitted && formControls.age.errors?.required"
               >
                 The student's age is a required field
+              </div>
+              <div
+                class="text-danger"
+                *ngIf="submitted && formControls.age.errors?.min"
+              >
+                The student's age must be between 3 and 18
+              </div>
+              <div
+                class="text-danger"
+                *ngIf="submitted && formControls.age.errors?.max"
+              >
+                The student's age must be between 3 and 18
               </div>
             </div>
 

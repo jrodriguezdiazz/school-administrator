@@ -132,14 +132,22 @@ export class CreateStudentComponent implements OnInit {
     if (!file) {
       return;
     }
+
     const reader = new FileReader();
     reader.onload = (event) => {
-      const {
-        students: { student },
-      } = this.convertXMLToJSON(event);
-      console.log(student);
+      try {
+        const {
+          students: { student },
+        } = this.convertXMLToJSON(event);
+        console.log(student);
 
-      this.createStudentByXML(student);
+        this.createStudentByXML(student);
+      } catch (error) {
+        this.toastr.error(
+          'Something has missed implementing the XML file',
+          'Check the XML file please'
+        );
+      }
     };
     reader.readAsText(file);
   }
