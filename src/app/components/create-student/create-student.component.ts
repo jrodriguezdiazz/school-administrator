@@ -30,7 +30,9 @@ export class CreateStudentComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       age: ['', Validators.required],
+      file: ['', Validators.required],
     });
+
     this.id = this.activatedRoute.snapshot.paramMap.get('id');
     this.title = this.id ? 'Edit a student' : this.title;
     this.buttonText = this.id ? 'Update student data' : this.title;
