@@ -23,9 +23,9 @@
             <td>{{ student.firstName }}</td>
             <td>{{ student.lastName }}</td>
             <td>{{ student.age }}</td>
-            <td *ngIf="student.biography">
+            <td *ngIf="student.file">
               <a
-                [href]="student.biography"
+                [href]="student.file"
                 target="_blank"
                 rel="noopener noreferrer"
                 [download]="student.firstname"
@@ -33,7 +33,7 @@
                 Biography
               </a>
             </td>
-            <td *ngIf="!student.biography">No biography has been provided</td>
+            <td *ngIf="!student.file">No file has been provided</td>
             <td>
               <i
                 class="fas fa-edit fa-lg text-info me-2"

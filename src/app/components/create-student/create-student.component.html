@@ -126,6 +126,7 @@
                   accept=".pdf"
                   class="form-control"
                   id="input-file"
+                  (change)="handleFile($event)"
                 />
               </div>
               <div
@@ -133,6 +134,16 @@
                 *ngIf="submitted && formControls.file.errors?.required"
               >
                 The biography of the student is a required field
+              </div>
+              <div class="text-info" *ngIf="id">
+                <span>
+                  <b>
+                    <i>
+                      Unfortunately when editing the information of a student
+                      will have to return to upload his bibliography
+                    </i>
+                  </b>
+                </span>
               </div>
             </div>
 

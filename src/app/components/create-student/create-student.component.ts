@@ -58,7 +58,7 @@ export class CreateStudentComponent implements OnInit {
 
   createStudent(data: any) {
     this.loading = true;
-    this.studentService.createStudent(data);
+    this.studentService.preAddAndUpdateFile(true, '', data, this.file);
 
     this.toastrService.success('The student was registered with success!');
     this.loading = false;
@@ -75,11 +75,11 @@ export class CreateStudentComponent implements OnInit {
 
     this.loading = true;
 
-    this.studentService.updateStudent(id, student).then(() => {
-      this.loading = false;
-      this.toastrService.info('Student data have been modified with success');
-      this.router.navigate(['/list-students']);
-    });
+    this.studentService.preAddAndUpdateFile(false, id, student, this.file);
+
+    this.loading = false;
+    this.toastrService.info('Student data have been modified with success');
+    this.router.navigate(['/list-students']);
   }
 
   isEdit() {
@@ -99,11 +99,11 @@ export class CreateStudentComponent implements OnInit {
 
   fillFields(data: any) {
     this.loading = false;
-    this.createStudentFormGroup.setValue({
+    this.createStudentFormGroup.patchValue({
       firstName: data.payload.data()['firstName'],
       lastName: data.payload.data()['lastName'],
       age: data.payload.data()['age'],
-      file: data.payload.data()['file'],
+      // file: data.payload.data()['file'],
     });
   }
 
@@ -175,5 +175,9 @@ export class CreateStudentComponent implements OnInit {
 
   get formControls() {
     return this.createStudentFormGroup['controls'];
+  }
+
+  handleFile(event: any) {
+    this.file = event.target.files[0];
   }
 }

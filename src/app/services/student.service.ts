@@ -23,7 +23,7 @@ export class StudentService {
       age: student.age,
       creationDateNew: new Date(),
       dateUpdate: new Date(),
-      file: '',
+      file: student.file,
     };
     return this.firestore.collection('students').add(studentObj);
   }
@@ -42,7 +42,45 @@ export class StudentService {
     return this.firestore.collection('students').doc(id).snapshotChanges();
   }
 
-  updateStudent(id: string, data: any): Promise<any> {
-    return this.firestore.collection('students').doc(id).update(data);
+  updateStudent(id: string, student: any): Promise<any> {
+    const studentObj = {
+      firstName: student.firstName,
+      lastName: student.lastName,
+      age: student.age,
+      creationDateNew: new Date(),
+      dateUpdate: new Date(),
+      file: student.file,
+    };
+    return this.firestore.collection('students').doc(id).update(studentObj);
+  }
+
+  preAddAndUpdateFile(isNew: boolean, id: string, student: any, file: any) {
+    return this.uploadFile(isNew, id, student, file);
+  }
+
+  uploadFile(isNew: boolean, id: string, student: any, file: any) {
+    this.filePath = `files/${new Date().getTime()}_${file.name}`;
+    const fileRef = this.storage.ref(this.filePath);
+
+    const task = this.storage.upload(this.filePath, file);
+
+    task
+      .snapshotChanges()
+      .pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe((urlFile) => {
+            this.downloadUrl = urlFile;
+            if (isNew) {
+              return this.createStudent({ ...student, file: this.downloadUrl });
+            } else {
+              return this.updateStudent(id, {
+                ...student,
+                file: this.downloadUrl,
+              });
+            }
+          });
+        })
+      )
+      .subscribe();
   }
 }
