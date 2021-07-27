@@ -23,6 +23,7 @@ export class StudentService {
       age: student.age,
       creationDateNew: new Date(),
       dateUpdate: new Date(),
+      file: '',
     };
     return this.firestore.collection('students').add(studentObj);
   }

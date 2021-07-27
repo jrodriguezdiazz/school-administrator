@@ -103,6 +103,7 @@ export class CreateStudentComponent implements OnInit {
       firstName: data.payload.data()['firstName'],
       lastName: data.payload.data()['lastName'],
       age: data.payload.data()['age'],
+      file: data.payload.data()['file'],
     });
   }
 
@@ -125,12 +126,10 @@ export class CreateStudentComponent implements OnInit {
     students.map((student: any) => {
       const { name, lastname, age } = student;
       const data = {
-        creationDateNew: Date(),
-        dateUpdate: new Date(),
         firstName: name._text,
         lastName: lastname._text,
         age: age._text,
-        biography: '',
+        file: '',
       };
 
       this.studentService
@@ -161,11 +160,10 @@ export class CreateStudentComponent implements OnInit {
     reader.onload = (event) => {
       try {
         const {
-          students: { student },
+          students: { student: studentArray },
         } = this.convertXMLToJSON(event);
-        console.log(student);
 
-        this.createStudentByXML(student);
+        this.createStudentByXML(studentArray);
       } catch (error) {
         this.redirect(
           'Check the XML file please\nSomething has missed implementing the XML file'
