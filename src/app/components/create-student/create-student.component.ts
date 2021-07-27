@@ -62,7 +62,7 @@ export class CreateStudentComponent implements OnInit {
 
     this.toastrService.success('The student was registered with success!');
     this.loading = false;
-    this.router.navigate(['/list-students']);
+    this.router.navigate(['/']);
   }
 
   editStudent(id: string) {
@@ -79,7 +79,7 @@ export class CreateStudentComponent implements OnInit {
 
     this.loading = false;
     this.toastrService.info('Student data have been modified with success');
-    this.router.navigate(['/list-students']);
+    this.router.navigate(['/']);
   }
 
   isEdit() {
@@ -89,9 +89,10 @@ export class CreateStudentComponent implements OnInit {
         try {
           this.fillFields(data);
         } catch (error) {
-          this.redirect(
-            `Apparently there is no student with the ID: ${this.id} \n You will be redirected to the home page soon ...`
-          );
+          // console.error(error);
+          // this.redirect(
+          //   `Apparently there is no student with the ID: ${this.id} \n You will be redirected to the home page soon ...`
+          // );
         }
       });
     }
@@ -113,7 +114,7 @@ export class CreateStudentComponent implements OnInit {
       `You will be redirected to the home page soon ...`
     );
     setTimeout(() => {
-      this.router.navigate(['list-student']);
+      this.router.navigate(['/']);
     }, 6000);
   }
 
@@ -122,6 +123,12 @@ export class CreateStudentComponent implements OnInit {
     return JSON.parse(xml2json(xmlData, { compact: true, spaces: 4 }));
   }
 
+  validateValuesXML(student: any) {
+    const minLengthLastName = student.lastName.length > 2;
+    const minLengthFirstName = student.firstName.length > 2;
+    const rangeAge = student.age > 3 && student.age < 19;
+    return minLengthLastName && minLengthFirstName && rangeAge;
+  }
   createStudentByXML(students: any) {
     students.map((student: any) => {
       const { name, lastname, age } = student;
@@ -131,23 +138,32 @@ export class CreateStudentComponent implements OnInit {
         age: age._text,
         file: '',
       };
-
-      this.studentService
-        .createStudent(data)
-        .then(() => {
-          this.loading = false;
-          this.router.navigate(['/list-students']);
-        })
-        .catch((error: Error) => {
-          this.loading = false;
-          this.redirect(
-            `An unexpected error has occurred when creating the students\n${error.name}\n${error.message}`
-          );
-        });
+      if (this.validateValuesXML(data)) {
+        this.studentService
+          .createStudent(data)
+          .then(() => {
+            this.loading = false;
+            this.toastrService.success(
+              `The ${data.firstName} ${data.lastName} student has been registered!`
+            );
+          })
+          .catch((error: Error) => {
+            this.loading = false;
+            this.redirect(
+              `An unexpected error has occurred when creating the students\n${error.name}\n${error.message}`
+            );
+          });
+      } else {
+        this.toastrService.error(
+          'The name and last name must have a minimum 3 characters and age must be between 3 and 18 years old',
+          `Student ${data.firstName} ${data.lastName} data does not pass with criteria`
+        );
+      }
     });
-    this.toastrService.success(
-      `${students.length} students have been registered!`
-    );
+
+    setTimeout(() => {
+      this.router.navigate(['/']);
+    }, 6000);
   }
 
   readFile(event: any) {

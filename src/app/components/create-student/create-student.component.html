@@ -100,16 +100,10 @@
               >
                 The student's age is a required field
               </div>
-              <div
-                class="text-danger"
-                *ngIf="submitted && formControls.age.errors?.min"
-              >
+              <div class="text-danger" *ngIf="formControls.age.errors?.min">
                 The student's age must be between 3 and 18
               </div>
-              <div
-                class="text-danger"
-                *ngIf="submitted && formControls.age.errors?.max"
-              >
+              <div class="text-danger" *ngIf="formControls.age.errors?.max">
                 The student's age must be between 3 and 18
               </div>
             </div>
@@ -123,7 +117,7 @@
                   formControlName="file"
                   name="file"
                   type="file"
-                  accept=".pdf"
+                  accept=".pdf,.doc,.txt,.docx"
                   class="form-control"
                   id="input-file"
                   (change)="handleFile($event)"
@@ -139,8 +133,8 @@
                 <span>
                   <b>
                     <i>
-                      Unfortunately when editing the information of a student
-                      will have to return to upload his bibliography
+                      Unfortunately you will have to upload again the biography
+                      of the student....
                     </i>
                   </b>
                 </span>

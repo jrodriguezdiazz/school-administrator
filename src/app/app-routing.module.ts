@@ -6,11 +6,11 @@ import { ListStudentsComponent } from './components/list-students/list-students.
 import { NavbarComponent } from './components/navbar/navbar.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'list-students', pathMatch: 'full' },
+  { path: '', pathMatch: 'full', component: ListStudentsComponent },
   { path: 'list-students', component: ListStudentsComponent },
   { path: 'create-student', component: CreateStudentComponent },
   { path: 'edit-student/:id', component: CreateStudentComponent },
-  { path: '**', redirectTo: 'list-students', pathMatch: 'full' },
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
 
 @NgModule({
